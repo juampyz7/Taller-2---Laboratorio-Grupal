@@ -36,6 +36,7 @@ public class Controlador {
 
     public void agregarMenuNinos(String nombre, double valorInicial, double helado, double pastel) {
         validarCuentaActiva();
+        cuenta.agregarMenu(new MenuNiños(nombre, valorInicial, helado, pastel));
         cuenta.agregarMenu(new MenuNinos(nombre, valorInicial, helado, pastel));
     }
 
@@ -83,6 +84,7 @@ public class Controlador {
         return new Menu[] {
             new MenuCarta("Filete de res", 15.00, 3.50, 2.00, 10),
             new MenuDia("Sopa del dia + seco", 8.00, 1.50, 1.00),
+            new MenuNiños("Nuggets con papas", 6.00, 1.50, 2.00),
             new MenuNinos("Nuggets con papas", 6.00, 1.50, 2.00),
             new MenuEco("Arroz con pollo", 7.00, 20)
         };
