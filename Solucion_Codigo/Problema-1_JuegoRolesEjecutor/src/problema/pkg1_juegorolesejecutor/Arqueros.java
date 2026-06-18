@@ -1,6 +1,6 @@
 
 package problema.pkg1_juegorolesejecutor;
-
+//clase Arqueros
 
 public class Arqueros extends Personaje {
 
