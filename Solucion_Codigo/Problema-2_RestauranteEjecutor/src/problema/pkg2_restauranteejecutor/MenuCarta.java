@@ -4,6 +4,8 @@
  */
 package problema.pkg2_restauranteejecutor;
 
+// Creacion clases hijas
+
 public class MenuCarta extends Menu {
 
     private double valorGuarnicion;
