@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 
 package problema.pkg1_juegorolesejecutor;
 
-
-=======
-package problema.pkg1_juegorolesejecutor;
-
->>>>>>> cb49e44134c3e3397c5135962cb59a566b1a42fc
 public class Magos extends Personaje {
 
     private int mana;
