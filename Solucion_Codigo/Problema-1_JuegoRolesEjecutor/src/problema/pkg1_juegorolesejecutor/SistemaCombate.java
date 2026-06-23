@@ -29,40 +29,58 @@ public class SistemaCombate {
                  
         return resultado.toString();
     }
+    public void iniciarCombate(Personaje jugador1, Personaje jugador2) {
+        System.out.println("--- INICIO DEL COMBATE ---");
+        System.out.println(jugador1.getNombre() + " VS " + jugador2.getNombre());
+        System.out.println("--------------------------\n");
 
-    public String ejecutarBatalla(Personaje p1, Personaje p2) {
-        StringBuilder log = new StringBuilder();
-        log.append("===== INICIO DE BATALLA =====\n");
-        log.append(p1.toString()).append("\n");
-        log.append(p2.toString()).append("\n\n");
+        int turnoActual = 1;
 
-        int ronda = 1;
-        while (p1.estaVivo() && p2.estaVivo()) {
-            log.append("-- Ronda ").append(ronda).append(" --\n");
+        while (jugador1.getVidaActual() > 0 && jugador2.getVidaActual() > 0) {
+            System.out.println("=== TURNO " + turnoActual + " ===");
 
-            if (ronda % 3 == 0) {
-                log.append(p1.usarHabilidadEspecial()).append("\n");
-                log.append(p2.usarHabilidadEspecial()).append("\n");
+            ejecutarTurnoPersonaje(jugador1, jugador2);
+
+            if (jugador2.getVidaActual() <= 0) {
+                break;
             }
 
-            log.append(ejecutarRonda(p1, p2)).append("\n");
-            if (!p2.estaVivo()) break;
+            System.out.println();
 
-            log.append(ejecutarRonda(p2, p1)).append("\n");
-            ronda++;
+            ejecutarTurnoPersonaje(jugador2, jugador1);
+
+            System.out.println("\n--------------------------------------------------");
+            turnoActual++;
         }
 
-        log.append("\n===== FIN DE BATALLA =====\n");
-        if (p1.estaVivo()) {
-            p1.subirNivel();
-            log.append("Ganador: ").append(p1.getNombre()).append(" | Sube al nivel ").append(p1.getNivelExperiencia()).append("\n");
-            log.append(p1.toString());
+        mostrarGanador(jugador1, jugador2);
+    }
+
+    private void ejecutarTurnoPersonaje(Personaje activo, Personaje objetivo) {
+        System.out.println("Turno de: " + activo.getNombre());
+
+        activo.procesarTurno();
+
+        if (activo.getVidaActual() > 0) {
+            if (activo instanceof Guerrero && activo.getEnergiaActual() >= 30) {
+                activo.usarHabilidadEspecial(objetivo);
+            } else if (activo instanceof Arqueros && activo.getEnergiaActual() >= 25) {
+                activo.usarHabilidadEspecial(objetivo);
+            } else if (activo instanceof Magos && activo.getEnergiaActual() >= 40) {
+                activo.usarHabilidadEspecial(objetivo);
+            } else {
+                activo.atacar(objetivo);
+            }
+        }
+    }
+
+    private void mostrarGanador(Personaje jugador1, Personaje jugador2) {
+        System.out.println("\n=== FIN DEL COMBATE ===");
+        if (jugador1.getVidaActual() <= 0) {
+            System.out.println("¡" + jugador2.getNombre() + " ha ganado el combate!");
         } else {
-            p2.subirNivel();
-            log.append("Ganador: ").append(p2.getNombre()).append(" | Sube al nivel ").append(p2.getNivelExperiencia()).append("\n");
-            log.append(p2.toString());
+            System.out.println("¡" + jugador1.getNombre() + " ha ganado el combate!");
         }
-
-        return log.toString();
     }
 }
+

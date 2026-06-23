@@ -5,4 +5,14 @@ public interface IEstadoAlterado {
     void aplicarEfecto(Personaje p);
     boolean haTerminado();
     String getNombre();
+
+public interface IEstadoAlterado {
+
+    String getNombre();
+
+    void aplicarEfecto(Personaje personaje);
+
+    void reducirTurno();
+
+    boolean estaActivo();
 }

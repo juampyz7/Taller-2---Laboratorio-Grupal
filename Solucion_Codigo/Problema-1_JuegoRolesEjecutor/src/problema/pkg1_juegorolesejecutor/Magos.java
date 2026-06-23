@@ -3,62 +3,55 @@ package problema.pkg1_juegorolesejecutor;
 
 public class Magos extends Personaje {
 
-    private int mana;
-    private int poderMagico;
+    private int intelecto;
+    private int cooldownHabilidad;
 
-    public Magos(String nombre, int puntosDeVida, int ataque, int defensa, int mana, int poderMagico) {
-        super(nombre, puntosDeVida, ataque, defensa);
-        this.mana = mana;
-        this.poderMagico = poderMagico;
+    public Magos(String nombre, int puntosDeVida, int ataque, int defensa, int intelecto) {
+        // Usamos 100 como energiaMax heredada en lugar de crear una variable de maná propia
+        super(nombre, puntosDeVida, ataque, defensa, 100);
+        this.intelecto = intelecto;
+        this.cooldownHabilidad = 0;
     }
 
     @Override
     public int calcularAtaque() {
-        if (mana >= 20) {
-            mana -= 20;
-            return ataque + poderMagico + (nivelExperiencia * 5);
-        }
-        return ataque + (nivelExperiencia * 2);
+        return this.ataqueBase + this.intelecto;
     }
 
     @Override
     public int calcularDefensa() {
-        if (mana >= 10) {
-            mana -= 10;
-            return defensa + (poderMagico / 2) + nivelExperiencia;
-        }
-        return defensa;
+  
+        return this.defensaBase;
     }
 
     @Override
-    public String usarHabilidadEspecial() {
-        if (mana >= 30) {
-            mana -= 30;
-            int danioHechizo = poderMagico * 3;
-            return nombre + " lanza [Meteoro Arcano]! Dano magico: " + danioHechizo + " | Mana restante: " + mana;
+    public void procesarTurno() {
+        super.procesarTurno();
+        if (cooldownHabilidad > 0) {
+            cooldownHabilidad--;
         }
-        mana += 20;
-        return nombre + " medita y recupera mana. Mana actual: " + mana;
-    }
-
-    public int getMana() {
-        return mana;
-    }
-
-    public int getPoderMagico() {
-        return poderMagico;
-    }
-
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    public void setPoderMagico(int poderMagico) {
-        this.poderMagico = poderMagico;
     }
 
     @Override
-    public String toString() {
-        return super.toString() + " | Mana: " + mana + " | Poder Magico: " + poderMagico;
+    public void usarHabilidadEspecial(Personaje objetivo) {
+        if (cooldownHabilidad > 0) {
+            System.out.println("Habilidad en enfriamiento. Faltan " + cooldownHabilidad + " turnos.");
+            return;
+        }
+
+        try {
+            usarEnergia(40);
+            System.out.println(nombre + " lanza Explosion Arcana.");
+            int defensaReducida = objetivo.calcularDefensa() / 2;
+            int dañoEspecial = this.calcularAtaque() - defensaReducida;
+            if (dañoEspecial < 0) {
+                dañoEspecial = 0;
+            }
+
+            objetivo.recibirDaño(dañoEspecial);
+            this.cooldownHabilidad = 3;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
