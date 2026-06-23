@@ -45,6 +45,12 @@ public class Problema1_JuegoRolesEjecutor {
         System.out.println("\n--- Personajes creados ---");
         System.out.println(jugador.toString());
         System.out.println(enemigo.toString());
+        
+        System.out.println("\n--- APLICANDO ESTADOS ALTERADOS ---");
+        
+        jugador.agregarEstado(new FuerzaAumentada(3, 20));
+        enemigo.agregarEstado(new Envenenado(4, 15));
+        enemigo.agregarEstado(new Congelado(1));
 
         gestionarInventario(jugador);
 

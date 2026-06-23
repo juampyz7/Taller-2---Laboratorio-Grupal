@@ -2,6 +2,33 @@ package problema.pkg1_juegorolesejecutor;
 
 public class SistemaCombate {
 
+   public String ejecutarRonda(Personaje atacante, Personaje defensor) {
+        StringBuilder resultado = new StringBuilder();
+        
+        atacante.procesarEstados();
+        
+        if (!atacante.estaVivo()) {
+            return atacante.getNombre() + " ha caido por sus estados alterados antes de atacar.";
+        }
+        
+        if (!atacante.isPuedeAtacar()) {
+            return atacante.getNombre() + " no puede atacar este turno debido a un estado.";
+        }
+
+        int danoAtacante = atacante.calcularAtaque();
+        defensor.recibirDano(danoAtacante);
+        resultado.append(atacante.getNombre())
+                 .append(" ataca a ")
+                 .append(defensor.getNombre())
+                 .append(" con ")
+                 .append(danoAtacante)
+                 .append(" de ataque. HP de ")
+                 .append(defensor.getNombre())
+                 .append(": ")
+                 .append(defensor.getPuntosDeVida());
+                 
+        return resultado.toString();
+    }
     public void iniciarCombate(Personaje jugador1, Personaje jugador2) {
         System.out.println("--- INICIO DEL COMBATE ---");
         System.out.println(jugador1.getNombre() + " VS " + jugador2.getNombre());
