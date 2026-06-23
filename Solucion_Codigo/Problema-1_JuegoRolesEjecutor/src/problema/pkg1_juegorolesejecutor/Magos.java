@@ -2,62 +2,55 @@ package problema.pkg1_juegorolesejecutor;
 
 public class Magos extends Personaje {
 
-    private int mana;
-    private int poderMagico;
+    private int intelecto;
+    private int cooldownHabilidad;
 
-    public Magos(String nombre, int puntosDeVida, int ataque, int defensa, int mana, int poderMagico) {
-        super(nombre, puntosDeVida, ataque, defensa);
-        this.mana = mana;
-        this.poderMagico = poderMagico;
+    public Magos(String nombre, int puntosDeVida, int ataque, int defensa, int intelecto) {
+        // Usamos 100 como energiaMax heredada en lugar de crear una variable de maná propia
+        super(nombre, puntosDeVida, ataque, defensa, 100);
+        this.intelecto = intelecto;
+        this.cooldownHabilidad = 0;
     }
 
     @Override
     public int calcularAtaque() {
-        if (mana >= 20) {
-            mana -= 20;
-            return ataque + poderMagico + (nivelExperiencia * 5);
-        }
-        return ataque + (nivelExperiencia * 2);
+        return this.ataqueBase + this.intelecto;
     }
 
     @Override
     public int calcularDefensa() {
-        if (mana >= 10) {
-            mana -= 10;
-            return defensa + (poderMagico / 2) + nivelExperiencia;
+  
+        return this.defensaBase;
+    }
+
+    @Override
+    public void procesarTurno() {
+        super.procesarTurno();
+        if (cooldownHabilidad > 0) {
+            cooldownHabilidad--;
         }
-        return defensa;
     }
 
     @Override
     public void usarHabilidadEspecial(Personaje objetivo) {
-        try {
-            // El Alumno 3 programará la lógica de cooldowns y costes aquí
-            usarEnergia(20);
-            System.out.println(nombre + " usa Golpe Devastador (Requiere integración de Cooldowns).");
-        } catch (Exception e) {
-            System.out.println(nombre + " intentó usar su habilidad especial pero: " + e.getMessage());
+        if (cooldownHabilidad > 0) {
+            System.out.println("Habilidad en enfriamiento. Faltan " + cooldownHabilidad + " turnos.");
+            return;
         }
-    }
 
-    public int getMana() {
-        return mana;
-    }
+        try {
+            usarEnergia(40);
+            System.out.println(nombre + " lanza Explosion Arcana.");
+            int defensaReducida = objetivo.calcularDefensa() / 2;
+            int dañoEspecial = this.calcularAtaque() - defensaReducida;
+            if (dañoEspecial < 0) {
+                dañoEspecial = 0;
+            }
 
-    public int getPoderMagico() {
-        return poderMagico;
-    }
-
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    public void setPoderMagico(int poderMagico) {
-        this.poderMagico = poderMagico;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + " | Mana: " + mana + " | Poder Magico: " + poderMagico;
+            objetivo.recibirDaño(dañoEspecial);
+            this.cooldownHabilidad = 3;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

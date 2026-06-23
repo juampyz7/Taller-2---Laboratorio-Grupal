@@ -1,41 +1,64 @@
 package problema.pkg1_juegorolesejecutor;
-//clase Arqueros
 
 public class Arqueros extends Personaje {
 
     private int precision;
     private int flechas;
+    private int cooldownHabilidad;
 
-    public Arqueros(String nombre, int puntosDeVida, int ataque, int defensa,
-            int precision, int flechas) {
-        super(nombre, puntosDeVida, ataque, defensa);
+    public Arqueros(String nombre, int puntosDeVida, int ataque, int defensa, int precision, int flechas) {
+
+        super(nombre, puntosDeVida, ataque, defensa, 60);
         this.precision = precision;
         this.flechas = flechas;
+        this.cooldownHabilidad = 0;
     }
 
     @Override
     public int calcularAtaque() {
-        if (flechas > 0) {
-            flechas--;
-            int bonusPrecision = (precision / 10) * nivelExperiencia;
-            return ataque + bonusPrecision;
-        }
-        return ataque / 2;
+        return this.ataqueBase + this.precision;
     }
 
     @Override
     public int calcularDefensa() {
-        return defensa + (precision / 5) + nivelExperiencia;
+        return this.defensaBase;
+    }
+
+    @Override
+    public void procesarTurno() {
+        super.procesarTurno();
+        if (cooldownHabilidad > 0) {
+            cooldownHabilidad--;
+        }
     }
 
     @Override
     public void usarHabilidadEspecial(Personaje objetivo) {
+        if (cooldownHabilidad > 0) {
+            System.out.println("Habilidad en enfriamiento. Faltan " + cooldownHabilidad + " turnos.");
+            return;
+        }
+
+        if (this.flechas < 2) {
+            System.out.println(nombre + " no tiene suficientes flechas para la habilidad.");
+            return;
+        }
+
         try {
-            // El Alumno 3 programará la lógica de cooldowns y costes aquí
-            usarEnergia(20);
-            System.out.println(nombre + " usa Golpe Devastador (Requiere integración de Cooldowns).");
+            usarEnergia(25);
+            this.flechas -= 2; 
+            System.out.println(nombre + " ejecuta Lluvia de Flechas gastando 2 flechas.");
+
+            int dañoPrimerImpacto = (int) (this.calcularAtaque() * 0.8);
+            int dañoSegundoImpacto = (int) (this.calcularAtaque() * 0.8);
+
+            objetivo.recibirDaño(dañoPrimerImpacto);
+            if (objetivo.getVidaActual() > 0) {
+                objetivo.recibirDaño(dañoSegundoImpacto);
+            }
+            this.cooldownHabilidad = 2;
         } catch (Exception e) {
-            System.out.println(nombre + " intentó usar su habilidad especial pero: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
