@@ -1,4 +1,3 @@
-
 package problema.pkg1_juegorolesejecutor;
 
 public class Magos extends Personaje {
@@ -31,14 +30,14 @@ public class Magos extends Personaje {
     }
 
     @Override
-    public String usarHabilidadEspecial() {
-        if (mana >= 30) {
-            mana -= 30;
-            int danioHechizo = poderMagico * 3;
-            return nombre + " lanza [Meteoro Arcano]! Dano magico: " + danioHechizo + " | Mana restante: " + mana;
+    public void usarHabilidadEspecial(Personaje objetivo) {
+        try {
+            // El Alumno 3 programará la lógica de cooldowns y costes aquí
+            usarEnergia(20);
+            System.out.println(nombre + " usa Golpe Devastador (Requiere integración de Cooldowns).");
+        } catch (Exception e) {
+            System.out.println(nombre + " intentó usar su habilidad especial pero: " + e.getMessage());
         }
-        mana += 20;
-        return nombre + " medita y recupera mana. Mana actual: " + mana;
     }
 
     public int getMana() {

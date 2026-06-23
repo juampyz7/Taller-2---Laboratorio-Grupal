@@ -1,4 +1,3 @@
-
 package problema.pkg1_juegorolesejecutor;
 //clase Arqueros
 
@@ -7,7 +6,7 @@ public class Arqueros extends Personaje {
     private int precision;
     private int flechas;
 
-    public Arqueros(String nombre, int puntosDeVida, int ataque, int defensa, 
+    public Arqueros(String nombre, int puntosDeVida, int ataque, int defensa,
             int precision, int flechas) {
         super(nombre, puntosDeVida, ataque, defensa);
         this.precision = precision;
@@ -30,14 +29,14 @@ public class Arqueros extends Personaje {
     }
 
     @Override
-    public String usarHabilidadEspecial() {
-        if (flechas >= 3) {
-            flechas -= 3;
-            int danioLluvia = ataque * 2 + precision;
-            return nombre + " usa [Lluvia de Flechas]! Dano: " + danioLluvia + " | Flechas restantes: " + flechas;
+    public void usarHabilidadEspecial(Personaje objetivo) {
+        try {
+            // El Alumno 3 programará la lógica de cooldowns y costes aquí
+            usarEnergia(20);
+            System.out.println(nombre + " usa Golpe Devastador (Requiere integración de Cooldowns).");
+        } catch (Exception e) {
+            System.out.println(nombre + " intentó usar su habilidad especial pero: " + e.getMessage());
         }
-        flechas += 10;
-        return nombre + " recarga su carcaj. Flechas actuales: " + flechas;
     }
 
     public int getPrecision() {

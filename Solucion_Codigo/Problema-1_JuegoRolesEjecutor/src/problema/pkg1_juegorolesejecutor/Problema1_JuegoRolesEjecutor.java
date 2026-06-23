@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 public class Problema1_JuegoRolesEjecutor {
 
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         SistemaCombate sistema = new SistemaCombate();
 
         System.out.println("========================================");
@@ -41,35 +42,102 @@ public class Problema1_JuegoRolesEjecutor {
         System.out.println(jugador.toString());
         System.out.println(enemigo.toString());
 
+        gestionarInventario(jugador);
+
         System.out.println("\nPresione Enter para iniciar la batalla...");
         sc.nextLine();
 
         String resultadoBatalla = sistema.ejecutarBatalla(jugador, enemigo);
         System.out.println(resultadoBatalla);
 
-        System.out.println("\n--- Demostracion de polimorfismo ---");
+        System.out.println("\n--- Demostracion de polimorfismo con inventario ---");
         Personaje[] arena = {
             new Guerrero("Thor", 150, 30, 20, 40),
             new Magos("Gandalf", 100, 20, 10, 80, 50),
             new Arqueros("Legolas", 120, 25, 15, 90, 30)
         };
 
-        System.out.println("\nTodos los personajes del torneo:");
+        Objeto[] objetos = {
+            new Arma("Mjolnir", "Martillo legendario", 25),
+            new Armadura("Manto Arcano", "Tejido con hilos magicos", 20),
+            new Arma("Arco Elfico", "Arco de precision perfecta", 18)
+        };
+
+        System.out.println("\nEquipando objetos a personajes del torneo via polimorfismo:");
+        for (int i = 0; i < arena.length; i++) {
+            arena[i].agregarAlInventario(objetos[i]);
+            System.out.println(arena[i].equiparObjeto(0));
+        }
+
+        System.out.println("\nEstado final de personajes del torneo:");
         for (Personaje p : arena) {
             System.out.println(p.toString());
         }
 
-        System.out.println("\nHabilidades especiales de cada personaje:");
-        for (Personaje p : arena) {
-            System.out.println(p.usarHabilidadEspecial());
-        }
-
-        System.out.println("\nAtaque calculado de cada personaje:");
+        System.out.println("\nAtaque calculado incluyendo bonus de objeto:");
         for (Personaje p : arena) {
             System.out.println(p.getNombre() + " -> " + p.calcularAtaque() + " de ataque");
         }
 
         sc.close();
+    }
+
+    private static void gestionarInventario(Personaje personaje) {
+        int opcion = -1;
+        while (opcion != 0) {
+            System.out.println("\n--- INVENTARIO DE " + personaje.getNombre().toUpperCase() + " ---");
+            System.out.println("1. Agregar Arma al inventario");
+            System.out.println("2. Agregar Armadura al inventario");
+            System.out.println("3. Ver inventario");
+            System.out.println("4. Equipar objeto");
+            System.out.println("5. Desequipar objeto");
+            System.out.println("0. Continuar a la batalla");
+            System.out.print("Opcion: ");
+            opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre del arma: ");
+                    String nombreArma = sc.nextLine();
+                    System.out.print("Descripcion: ");
+                    String descArma = sc.nextLine();
+                    System.out.print("Bonus de ataque: ");
+                    int bonusAtq = sc.nextInt();
+                    sc.nextLine();
+                    personaje.agregarAlInventario(new Arma(nombreArma, descArma, bonusAtq));
+                    System.out.println("Arma agregada al inventario.");
+                    break;
+                case 2:
+                    System.out.print("Nombre de la armadura: ");
+                    String nombreArmadura = sc.nextLine();
+                    System.out.print("Descripcion: ");
+                    String descArmadura = sc.nextLine();
+                    System.out.print("Bonus de defensa: ");
+                    int bonusDef = sc.nextInt();
+                    sc.nextLine();
+                    personaje.agregarAlInventario(new Armadura(nombreArmadura, descArmadura, bonusDef));
+                    System.out.println("Armadura agregada al inventario.");
+                    break;
+                case 3:
+                    System.out.println(personaje.mostrarInventario());
+                    break;
+                case 4:
+                    System.out.println(personaje.mostrarInventario());
+                    System.out.print("Ingrese el indice del objeto a equipar: ");
+                    int idx = sc.nextInt();
+                    sc.nextLine();
+                    System.out.println(personaje.equiparObjeto(idx));
+                    break;
+                case 5:
+                    System.out.println(personaje.desequiparObjeto());
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opcion no valida.");
+            }
+        }
     }
 
     private static Personaje crearPersonaje(int opcion, String nombre) {
