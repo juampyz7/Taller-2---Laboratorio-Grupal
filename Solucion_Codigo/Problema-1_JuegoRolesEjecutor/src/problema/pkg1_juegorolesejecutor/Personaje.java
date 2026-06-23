@@ -44,14 +44,11 @@ public abstract class Personaje {
         return defensaTotal;
     }
 
-    // Lógica de combate base usando Polimorfismo
     public void atacar(Personaje objetivo) {
-        // Preparación para Alumno 2: Verificar si está congelado antes de atacar
         if (tieneEstado("Congelado")) {
-            System.out.println(nombre + " está congelado y no puede atacar este turno.");
+            System.out.println(nombre + " está congelado y no puede atacar.");
             return;
         }
-
         int daño = this.calcularAtaque() - objetivo.calcularDefensa();
         if (daño < 0) {
             daño = 0;
@@ -59,6 +56,12 @@ public abstract class Personaje {
 
         System.out.println(nombre + " ataca a " + objetivo.getNombre() + " causando " + daño + " de daño.");
         objetivo.recibirDaño(daño);
+
+        // NUEVA MECÁNICA: Recuperar energía al infligir daño (Genera 10 de energía)
+        if (daño > 0) {
+            this.setEnergiaActual(this.energiaActual + 10);
+            System.out.println("¡" + nombre + " recupera 10 de energía por atacar! (" + energiaActual + "/" + energiaMax + ")");
+        }
     }
 
     public void recibirDaño(int cantidad) {
@@ -67,6 +70,12 @@ public abstract class Personaje {
             this.vidaActual = 0;
         }
         System.out.println(nombre + " ahora tiene " + vidaActual + "/" + vidaMax + " de HP.");
+
+        // NUEVA MECÁNICA: Recuperar energía al recibir daño (Genera 15 de energía por el impacto)
+        if (cantidad > 0 && vidaActual > 0) {
+            this.setEnergiaActual(this.energiaActual + 15);
+            System.out.println("¡" + nombre + " acumula 15 de energía por el impacto recibido! (" + energiaActual + "/" + energiaMax + ")");
+        }
     }
 
     // Preparación para Alumno 2: Procesamiento de estados al inicio del turno
@@ -120,7 +129,7 @@ public abstract class Personaje {
     // Excepción sugerida para el Alumno 3
     public void usarEnergia(int cantidad) throws Exception {
         if (this.energiaActual < cantidad) {
-            throw new Exception("¡No hay suficiente energía/maná!");
+            throw new Exception("¡No hay suficiente energía!");
         }
         this.energiaActual -= cantidad;
     }
