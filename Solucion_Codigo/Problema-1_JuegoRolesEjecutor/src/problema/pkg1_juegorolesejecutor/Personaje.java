@@ -33,15 +33,19 @@ public abstract class Personaje {
 
     // Métodos dinámicos listos para ser modificados por el Alumno 1 (Inventario)
     public int calcularAtaque() {
-        int ataqueTotal = this.ataqueBase;
-        // El Alumno 1 modificará esto: if (objetoEquipado instanceof Arma) ...
-        return ataqueTotal;
+        int total = this.ataqueBase;
+        if (objetoEquipado instanceof Arma) {
+            total += ((Arma) objetoEquipado).getBonificadorAtaque(); // [cite: 21]
+        }
+        return total;
     }
 
     public int calcularDefensa() {
-        int defensaTotal = this.defensaBase;
-        // El Alumno 1 modificará esto: if (objetoEquipado instanceof Armadura) ...
-        return defensaTotal;
+        int total = this.defensaBase;
+        if (objetoEquipado instanceof Armadura) {
+            total += ((Armadura) objetoEquipado).getBonificadorDefensa();
+        }
+        return total;
     }
 
     public void atacar(Personaje objetivo) {

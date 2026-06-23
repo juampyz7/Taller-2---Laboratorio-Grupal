@@ -36,8 +36,13 @@ public class Controlador {
 
     public void agregarMenuNinos(String nombre, double valorInicial, double helado, double pastel) {
         validarCuentaActiva();
+<<<<<<< HEAD
+        cuenta.agregarMenu(new MenuNinos(nombre, valorInicial, helado, pastel));
+        cuenta.agregarMenu(new MenuNinos(nombre, valorInicial, helado, pastel));
+=======
         cuenta.agregarMenu(new MenuNiños(nombre, valorInicial, helado, pastel));
         cuenta.agregarMenu(new MenuNiños(nombre, valorInicial, helado, pastel));
+>>>>>>> b908045114f4f209fb88538acd377b348bcab441
     }
 
     public void agregarMenuEco(String nombre, double valorInicial, double porcentajeDescuento) {
@@ -84,8 +89,13 @@ public class Controlador {
         return new Menu[] {
             new MenuCarta("Filete de res", 15.00, 3.50, 2.00, 10),
             new MenuDia("Sopa del dia + seco", 8.00, 1.50, 1.00),
+<<<<<<< HEAD
+            new MenuNinos("Nuggets con papas", 6.00, 1.50, 2.00),
+            new MenuNinos("Nuggets con papas", 6.00, 1.50, 2.00),
+=======
             new MenuNiños("Nuggets con papas", 6.00, 1.50, 2.00),
             new MenuNiños("Nuggets con papas", 6.00, 1.50, 2.00),
+>>>>>>> b908045114f4f209fb88538acd377b348bcab441
             new MenuEco("Arroz con pollo", 7.00, 20)
         };
     }

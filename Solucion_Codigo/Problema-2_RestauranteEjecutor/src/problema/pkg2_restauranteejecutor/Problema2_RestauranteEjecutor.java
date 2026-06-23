@@ -140,6 +140,8 @@ public class Problema2_RestauranteEjecutor {
         }
     }
 
+    // ---------- Utilidades de lectura segura ----------
+
     private static String leerTexto(String mensaje) {
         System.out.print(mensaje);
         return sc.nextLine().trim();
