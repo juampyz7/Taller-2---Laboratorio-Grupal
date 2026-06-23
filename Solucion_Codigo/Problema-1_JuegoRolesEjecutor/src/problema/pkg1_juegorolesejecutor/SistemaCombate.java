@@ -2,8 +2,19 @@ package problema.pkg1_juegorolesejecutor;
 
 public class SistemaCombate {
 
-    public String ejecutarRonda(Personaje atacante, Personaje defensor) {
+   public String ejecutarRonda(Personaje atacante, Personaje defensor) {
         StringBuilder resultado = new StringBuilder();
+        
+        atacante.procesarEstados();
+        
+        if (!atacante.estaVivo()) {
+            return atacante.getNombre() + " ha caido por sus estados alterados antes de atacar.";
+        }
+        
+        if (!atacante.isPuedeAtacar()) {
+            return atacante.getNombre() + " no puede atacar este turno debido a un estado.";
+        }
+
         int danoAtacante = atacante.calcularAtaque();
         defensor.recibirDano(danoAtacante);
         resultado.append(atacante.getNombre())
@@ -15,6 +26,7 @@ public class SistemaCombate {
                  .append(defensor.getNombre())
                  .append(": ")
                  .append(defensor.getPuntosDeVida());
+                 
         return resultado.toString();
     }
 
