@@ -14,7 +14,7 @@ public class Envenenado implements IEstadoAlterado {
     public void aplicarEfecto(Personaje p) {
         if (turnosRestantes > 0) {
             System.out.println("  [ESTADO] " + p.getNombre() + " sufre " + danoPorTurno + " de dano por Veneno.");
-            p.recibirDano(danoPorTurno);
+            p.recibirDaño(danoPorTurno);
             turnosRestantes--;
         }
     }

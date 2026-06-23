@@ -2,33 +2,7 @@ package problema.pkg1_juegorolesejecutor;
 
 public class SistemaCombate {
 
-   public String ejecutarRonda(Personaje atacante, Personaje defensor) {
-        StringBuilder resultado = new StringBuilder();
-        
-        atacante.procesarEstados();
-        
-        if (!atacante.estaVivo()) {
-            return atacante.getNombre() + " ha caido por sus estados alterados antes de atacar.";
-        }
-        
-        if (!atacante.isPuedeAtacar()) {
-            return atacante.getNombre() + " no puede atacar este turno debido a un estado.";
-        }
-
-        int danoAtacante = atacante.calcularAtaque();
-        defensor.recibirDano(danoAtacante);
-        resultado.append(atacante.getNombre())
-                 .append(" ataca a ")
-                 .append(defensor.getNombre())
-                 .append(" con ")
-                 .append(danoAtacante)
-                 .append(" de ataque. HP de ")
-                 .append(defensor.getNombre())
-                 .append(": ")
-                 .append(defensor.getPuntosDeVida());
-                 
-        return resultado.toString();
-    }
+    // Método principal que recibe los modelos y controla el bucle del juego
     public void iniciarCombate(Personaje jugador1, Personaje jugador2) {
         System.out.println("--- INICIO DEL COMBATE ---");
         System.out.println(jugador1.getNombre() + " VS " + jugador2.getNombre());
@@ -39,14 +13,17 @@ public class SistemaCombate {
         while (jugador1.getVidaActual() > 0 && jugador2.getVidaActual() > 0) {
             System.out.println("=== TURNO " + turnoActual + " ===");
 
+            // Turno del jugador 1
             ejecutarTurnoPersonaje(jugador1, jugador2);
 
+            // Verificar si el jugador 2 murió
             if (jugador2.getVidaActual() <= 0) {
                 break;
             }
 
             System.out.println();
 
+            // Turno del jugador 2
             ejecutarTurnoPersonaje(jugador2, jugador1);
 
             System.out.println("\n--------------------------------------------------");
@@ -56,12 +33,15 @@ public class SistemaCombate {
         mostrarGanador(jugador1, jugador2);
     }
 
+    // Método interno encargado de procesar la lógica de cada personaje por turno
     private void ejecutarTurnoPersonaje(Personaje activo, Personaje objetivo) {
         System.out.println("Turno de: " + activo.getNombre());
-
+        
+        // Se procesan los estados alterados y se reducen los cooldowns
         activo.procesarTurno();
 
         if (activo.getVidaActual() > 0) {
+            // El controlador evalúa de forma polimórfica la energía para decidir la acción
             if (activo instanceof Guerrero && activo.getEnergiaActual() >= 30) {
                 activo.usarHabilidadEspecial(objetivo);
             } else if (activo instanceof Arqueros && activo.getEnergiaActual() >= 25) {
@@ -74,6 +54,7 @@ public class SistemaCombate {
         }
     }
 
+    // Método interno para evaluar y mostrar el desenlace
     private void mostrarGanador(Personaje jugador1, Personaje jugador2) {
         System.out.println("\n=== FIN DEL COMBATE ===");
         if (jugador1.getVidaActual() <= 0) {
@@ -83,4 +64,3 @@ public class SistemaCombate {
         }
     }
 }
-

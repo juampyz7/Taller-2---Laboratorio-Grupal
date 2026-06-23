@@ -1,7 +1,7 @@
-
 package problema.pkg1_juegorolesejecutor;
 
 public class Congelado implements IEstadoAlterado {
+
     private int turnosRestantes;
 
     public Congelado(int turnosRestantes) {
@@ -11,8 +11,7 @@ public class Congelado implements IEstadoAlterado {
     @Override
     public void aplicarEfecto(Personaje p) {
         if (turnosRestantes > 0) {
-            System.out.println("  [ESTADO] " + p.getNombre() + " esta congelado y pierde su turno.");
-            p.setPuedeAtacar(false); 
+            System.out.println("[ESTADO] " + p.getNombre() + " está congelado y pierde su turno.");
             turnosRestantes--;
         }
     }
@@ -27,4 +26,3 @@ public class Congelado implements IEstadoAlterado {
         return "Congelado (" + turnosRestantes + " turnos)";
     }
 }
-    

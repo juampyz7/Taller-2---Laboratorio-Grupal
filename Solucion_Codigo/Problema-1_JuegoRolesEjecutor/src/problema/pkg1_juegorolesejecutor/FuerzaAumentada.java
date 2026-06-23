@@ -1,7 +1,7 @@
-
 package problema.pkg1_juegorolesejecutor;
 
-public class FuerzaAumentada implements IEstadoAlterado{
+public class FuerzaAumentada implements IEstadoAlterado {
+
     private int turnosRestantes;
     private int bonoAtaque;
     private boolean buffAplicado;
@@ -15,16 +15,16 @@ public class FuerzaAumentada implements IEstadoAlterado{
     @Override
     public void aplicarEfecto(Personaje p) {
         if (!buffAplicado) {
-            System.out.println("  [BUFF] " + p.getNombre() + " se enfurece y aumenta su ataque en " + bonoAtaque + "!");
-            p.ataque += bonoAtaque; 
+            System.out.println("[BUFF] " + p.getNombre() + " se enfurece y aumenta su ataque en " + bonoAtaque + "!");
+            p.ataqueBase += bonoAtaque;
             buffAplicado = true;
         }
-        
+
         turnosRestantes--;
-        
+
         if (turnosRestantes <= 0) {
-            System.out.println("  [BUFF] El aumento de fuerza de " + p.getNombre() + " se ha desvanecido.");
-            p.ataque -= bonoAtaque; 
+            System.out.println("[BUFF] El aumento de fuerza de " + p.getNombre() + " se ha desvanecido.");
+            p.ataqueBase -= bonoAtaque;
         }
     }
 
@@ -37,5 +37,4 @@ public class FuerzaAumentada implements IEstadoAlterado{
     public String getNombre() {
         return "Fuerza Aumentada (" + turnosRestantes + " turnos)";
     }
-   
 }
