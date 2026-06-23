@@ -27,10 +27,14 @@ public class Guerrero extends Personaje {
     }
 
     @Override
-    public String usarHabilidadEspecial() {
-        escudoActivo = true;
-        int golpeCritico = fuerza * 2;
-        return nombre + " usa [Golpe Demoledor]! Fuerza extra: " + golpeCritico + " y activa escudo defensivo.";
+    public void usarHabilidadEspecial(Personaje objetivo) {
+        try {
+            // El Alumno 3 programará la lógica de cooldowns y costes aquí
+            usarEnergia(20);
+            System.out.println(nombre + " usa Golpe Devastador (Requiere integración de Cooldowns).");
+        } catch (Exception e) {
+            System.out.println(nombre + " intentó usar su habilidad especial pero: " + e.getMessage());
+        }
     }
 
     public int getFuerza() {
